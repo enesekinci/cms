@@ -21,31 +21,44 @@ class BlogPostResource extends Resource
     
     protected static ?string $navigationGroup = 'Blog';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->required(),
                 Forms\Components\TextInput::make('title')
+                    ->label('Başlık')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
-                    ->required()
+                    ->label('Slug')
                     ->maxLength(255),
-                Forms\Components\Textarea::make('excerpt')
-                    ->maxLength(65535)
+                Forms\Components\RichEditor::make('excerpt')
+                    ->label('Özet')
                     ->columnSpanFull(),
                 Forms\Components\RichEditor::make('content')
+                    ->label('İçerik')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('featured_image')
+                    ->label('Öne Çıkan Görsel')
                     ->image()
+                    ->directory('blog')
                     ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('published_at'),
-                Forms\Components\Toggle::make('is_active')
+                Forms\Components\TextInput::make('meta_title')
+                    ->label('Meta Başlık')
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('meta_description')
+                    ->label('Meta Açıklama')
+                    ->maxLength(255),
+                Forms\Components\Select::make('category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'name')
                     ->required(),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 
@@ -53,28 +66,32 @@ class BlogPostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Başlık')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('featured_image'),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Kategori')
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('featured_image')
+                    ->label('Görsel'),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Oluşturulma')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Güncellenme')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
-                    ->relationship('category', 'name')
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Aktif')
+                    ->boolean(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
