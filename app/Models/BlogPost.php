@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class BlogPost extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'title',
@@ -26,22 +26,7 @@ class BlogPost extends Model
         'is_active' => 'boolean',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($post) {
-            if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
-            }
-        });
-
-        static::updating(function ($post) {
-            if ($post->isDirty('title') && empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
-            }
-        });
-    }
+    protected $slugSource = 'title';
 
     public function category()
     {
