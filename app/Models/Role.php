@@ -11,9 +11,26 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-        'slug',
-        'description'
+        'display_name',
+        'description',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($role) {
+            if (empty($role->display_name)) {
+                $role->display_name = ucfirst($role->name);
+            }
+        });
+
+        static::updating(function ($role) {
+            if ($role->isDirty('name') && empty($role->display_name)) {
+                $role->display_name = ucfirst($role->name);
+            }
+        });
+    }
 
     public function users()
     {
