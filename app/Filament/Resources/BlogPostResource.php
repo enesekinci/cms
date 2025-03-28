@@ -33,7 +33,9 @@ class BlogPostResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled()
+                    ->dehydrated(),
                 Forms\Components\RichEditor::make('excerpt')
                     ->label('Özet')
                     ->columnSpanFull(),
@@ -55,6 +57,8 @@ class BlogPostResource extends Resource
                 Forms\Components\Select::make('category_id')
                     ->label('Kategori')
                     ->relationship('category', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Aktif')
