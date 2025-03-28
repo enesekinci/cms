@@ -21,18 +21,23 @@ class LanguageResource extends Resource
     
     protected static ?string $navigationGroup = 'Ayarlar';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Ad')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
+                    ->label('Kod')
                     ->required()
                     ->maxLength(2),
                 Forms\Components\Toggle::make('is_active')
-                    ->required(),
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 
@@ -41,22 +46,29 @@ class LanguageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Ad')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
+                    ->label('Kod')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Oluşturulma')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Güncellenme')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Aktif')
+                    ->boolean(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

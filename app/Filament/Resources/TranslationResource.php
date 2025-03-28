@@ -17,24 +17,31 @@ class TranslationResource extends Resource
 {
     protected static ?string $model = Translation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-translate';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
     
     protected static ?string $navigationGroup = 'Ayarlar';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('key')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('value')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
                 Forms\Components\Select::make('language_id')
+                    ->label('Dil')
                     ->relationship('language', 'name')
                     ->required(),
+                Forms\Components\TextInput::make('key')
+                    ->label('Anahtar')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('value')
+                    ->label('Değer')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 
@@ -42,25 +49,33 @@ class TranslationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('language.name')
+                    ->label('Dil')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('key')
+                    ->label('Anahtar')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('value')
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('language.name')
+                    ->label('Değer')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Oluşturulma')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Güncellenme')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('language')
-                    ->relationship('language', 'name')
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Aktif')
+                    ->boolean(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
