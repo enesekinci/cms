@@ -21,21 +21,28 @@ class BlogCategoryResource extends Resource
     
     protected static ?string $navigationGroup = 'Blog';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Ad')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
+                    ->label('Slug')
+                    ->maxLength(255)
+                    ->disabled()
+                    ->dehydrated(),
                 Forms\Components\Textarea::make('description')
+                    ->label('Açıklama')
                     ->maxLength(65535)
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
-                    ->required(),
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 
@@ -44,22 +51,29 @@ class BlogCategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Ad')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Oluşturulma')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Güncellenme')
+                    ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Aktif')
+                    ->boolean(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
