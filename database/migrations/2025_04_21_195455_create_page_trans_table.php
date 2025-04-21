@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blog_categories', function (Blueprint $table) {
+        Schema::create('page_trans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('page_id')->constrained('pages')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('language_id')->constrained('languages')->onDelete('cascade')->onUpdate('cascade');
-            $table->boolean('is_active')->default(true);
-            $table->string('name');
+            $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->text('content');
+            $table->json('features')->nullable();
+            $table->string('cover_image')->nullable();
             $table->boolean('seo_no_index')->default(false);
             $table->string('seo_title')->nullable();
-            $table->string('seo_description')->nullable();
+            $table->text('seo_description')->nullable();
             $table->string('seo_keywords')->nullable();
             $table->string('seo_image')->nullable();
             $table->timestamps();
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blog_categories');
+        Schema::dropIfExists('page_trans');
     }
 };

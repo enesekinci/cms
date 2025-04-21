@@ -3,22 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LanguageResource\Pages;
-use App\Filament\Resources\LanguageResource\RelationManagers;
 use App\Models\Language;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 
 class LanguageResource extends Resource
 {
     protected static ?string $model = Language::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-language';
-    
+
     protected static ?string $navigationGroup = 'Ayarlar';
 
     protected static ?int $navigationSort = 1;
@@ -38,6 +36,15 @@ class LanguageResource extends Resource
                 Forms\Components\Toggle::make('is_active')
                     ->label('Aktif')
                     ->default(true),
+                Forms\Components\Toggle::make('is_default')
+                    ->label('Varsayılan')
+                    ->default(false)
+                    ->afterStateUpdated(function ($state, $record) {
+                        if ($state) {
+                            // Eğer bu dil varsayılan olarak işaretlendiyse, diğer tüm dillerin varsayılan durumunu kaldır
+                            Language::where('id', '!=', $record?->id)->update(['is_default' => false]);
+                        }
+                    }),
             ]);
     }
 
@@ -51,6 +58,19 @@ class LanguageResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->label('Kod')
                     ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_default')
+                    ->label('Varsayılan')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->updateStateUsing(function (Model $record, $state) {
+                        if ($state) {
+                            // Eğer bu dil varsayılan olarak işaretlendiyse, diğer tüm dillerin varsayılan durumunu kaldır
+                            Language::where('id', '!=', $record->id)->update(['is_default' => false]);
+                        }
+                        return $state;
+                    }),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean(),

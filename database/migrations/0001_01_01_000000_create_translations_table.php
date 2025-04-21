@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
+            $table->string('group');
             $table->string('key');
-            $table->text('value');
-            $table->foreignId('language_id')->constrained()->onDelete('cascade');
+            $table->json('value');
             $table->timestamps();
         });
     }

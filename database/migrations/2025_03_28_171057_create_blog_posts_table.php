@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('blog_categories')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('language_id')->constrained('languages')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained('blog_categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->boolean('is_published')->default(false);
+            $table->timestamp('published_at')->nullable();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
-            $table->text('content');
-            $table->string('featured_image')->nullable();
-            $table->timestamp('published_at')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->longText('content');
+            $table->string('cover_image')->nullable();
+            $table->boolean('seo_no_index')->default(false);
+            $table->string('seo_title')->nullable();
+            $table->string('seo_description')->nullable();
+            $table->string('seo_keywords')->nullable();
+            $table->string('seo_image')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

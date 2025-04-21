@@ -1,0 +1,219 @@
+#Packages
+- Laravel
+- Filament
+- Filament Admin
+- Filament Forms
+- Filament Tables
+- Filament Notifications
+- Filament Spatie Laravel Translatable Plugin
+- Telescope
+- Debugbar
+
+
+
+
+#Modules
+
+- Language
+    - Languages
+    - Translations
+- Settings
+    - Site Settings
+    - Contact Settings
+    - Social Media Settings
+    - Extra Codes
+    - Seo
+    - Mail
+    - SMS
+    - Analytics
+- Activity Logs
+- Role
+- User
+- Blog
+    - Blog Categories
+    - Blogs
+- Gallery
+- Contact
+- About
+- Home
+- Slider
+    - Slider / Slider Images
+Menü
+Slider
+Gallery
+File Manager
+AboutUs
+ContactUs
+Breadcrumbs
+Header & Footer
+FormRequests
+    - ContactUsFormRequest
+    - HumanResourceFormRequest
+SEO
+
+
+
+- Language
+    - table_name: languages
+        - columns:
+            - id
+            - is_active
+            - is_default
+            - name
+            - code
+            - created_at
+            - updated_at
+- Slider
+    - table_name: sliders
+        - columns:
+            - id
+            - lang_id
+            - title
+            - created_at
+            - updated_at
+    - table_name: slider_images
+        - columns:
+            - id
+            - slider_id
+            - rank
+            - image
+            - image_title
+            - image_alt
+            - image_description
+            - image_url
+            - button_text
+            - button_url
+            - created_at
+            - updated_at            
+- Popup Yönetimi
+    - table_name: popups
+        - columns:
+            - id
+            - image
+            - open_time
+            - created_at
+            - updated_at
+    - table_name: popup_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - title
+            - description
+            - button_text
+            - created_at
+            - updated_at
+- Hakkımızda
+    - table_name: about_us
+        - columns:
+            - id
+            - image
+            - created_at
+            - updated_at
+    - table_name: about_us_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - title
+            - description
+            - features (JSON Array)
+            - seo_title
+            - seo_keywords
+            - seo_description
+            - created_at
+            - updated_at
+- İletişim
+    - table_name: contact_us
+        - columns:
+            - id
+            - created_at
+            - updated_at
+    - table_name: contact_us_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - form_title
+            - form_description
+            - form_button_text
+            - seo_title
+            - seo_keywords
+            - seo_description
+            - created_at
+            - updated_at
+- Blog
+    - table_name: blog_categories
+        - columns:
+            - id
+            - created_at
+            - updated_at
+    - table_name: blog_categories_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - title
+            - url
+            - seo_title
+            - seo_keywords
+            - seo_description
+            - created_at
+            - updated_at
+    - table_name: blogs
+        - columns:
+            - id
+            - category_id
+            - created_at
+            - updated_at
+    - table_name: blog_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - title
+            - description
+            - content
+            - seo_title
+            - seo_keywords
+            - seo_description
+            - created_at
+            - updated_at
+- Breadcrumbs
+    - table_name: breadcrumbs
+        - columns:
+            - id
+            - key
+            - image
+            - created_at
+            - updated_at
+    - table_name: breadcrumb_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - url
+            - title
+            - description
+            - breadcrumb_title
+            - created_at
+            - updated_at
+- Sözleşmeler
+    - table_name: contracts
+        - columns:
+            - id
+            - created_at
+            - updated_at
+    - table_name: contract_translations
+        - columns:
+            - id
+            - item_id
+            - lang_id
+            - url
+            - title
+            - description
+            - seo_title
+            - seo_keywords
+            - seo_description
+            - created_at
+            - updated_at

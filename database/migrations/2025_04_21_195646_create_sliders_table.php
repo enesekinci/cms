@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gallery_items', function (Blueprint $table) {
+        Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('gallery_id')->constrained()->onDelete('cascade');
             $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->string('image');
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gallery_items');
+        Schema::dropIfExists('sliders');
     }
 };

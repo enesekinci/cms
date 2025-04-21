@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code', 2);
-            $table->boolean('is_active')->default(true);
+            $table->string('path');
+            $table->string('type')->nullable(); // image, video, document etc.
+            $table->string('name')->nullable();
+            $table->string('mime')->nullable();
+            $table->integer('size')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('files');
     }
 };

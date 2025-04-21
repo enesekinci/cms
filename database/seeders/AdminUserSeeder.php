@@ -24,12 +24,10 @@ class AdminUserSeeder extends Seeder
 
         // Admin kullanıcısını oluştur
         $admin = User::create([
+            'role_id' => $adminRole->id,
             'name' => 'Enes Ekinci',
             'email' => 'enes.eknc.96@gmail.com',
             'password' => Hash::make('password'),
         ]);
-
-        // Admin kullanıcısına admin rolünü ata
-        $admin->roles()->attach($adminRole);
     }
 }
