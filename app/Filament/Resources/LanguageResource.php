@@ -65,8 +65,9 @@ class LanguageResource extends Resource
                     ->onIcon('heroicon-m-check')
                     ->offIcon('heroicon-m-x-mark')
                     ->updateStateUsing(function (Model $record, $state) {
+
                         if ($state) {
-                            // Eğer bu dil varsayılan olarak işaretlendiyse, diğer tüm dillerin varsayılan durumunu kaldır
+                            Language::where('id', $record->id)->update(['is_default' => true]);
                             Language::where('id', '!=', $record->id)->update(['is_default' => false]);
                         }
                         return $state;
