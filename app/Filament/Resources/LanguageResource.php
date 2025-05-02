@@ -39,12 +39,6 @@ class LanguageResource extends Resource
                 Forms\Components\Toggle::make('is_default')
                     ->label('Varsayılan')
                     ->default(false)
-                    ->afterStateUpdated(function ($state, $record) {
-                        if ($state) {
-                            // Eğer bu dil varsayılan olarak işaretlendiyse, diğer tüm dillerin varsayılan durumunu kaldır
-                            Language::where('id', '!=', $record?->id)->update(['is_default' => false]);
-                        }
-                    }),
             ]);
     }
 
@@ -65,12 +59,19 @@ class LanguageResource extends Resource
                     ->onIcon('heroicon-m-check')
                     ->offIcon('heroicon-m-x-mark')
                     ->updateStateUsing(function (Model $record, $state) {
+                        if ($record->is_default && !$state) {
+                            return true;
+                        }
 
                         if ($state) {
                             Language::where('id', $record->id)->update(['is_default' => true]);
                             Language::where('id', '!=', $record->id)->update(['is_default' => false]);
                         }
+
                         return $state;
+                    })
+                    ->default(function (Model $record) {
+                        return $record->is_default;
                     }),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
