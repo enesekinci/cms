@@ -18,20 +18,29 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 
-    // Dil Yönetimi
-    //    Volt::route('languages', 'languages.index')->name('languages.index');
-    //    Volt::route('languages/create', 'languages.create')->name('languages.create');
-    //    Volt::route('languages/{language}/edit', 'languages.edit')->name('languages.edit');
-
-    // Route::get('languages', App\Livewire\Languages\Index::class)->name('languages.index');
     Route::prefix('languages')->name('languages.')->group(function () {
         Route::get('/', App\Livewire\Languages\Index::class)->name('index');
         Route::get('/create', App\Livewire\Languages\Create::class)->name('create');
         Route::get('/{language}/edit', App\Livewire\Languages\Edit::class)->name('edit');
     });
 
-    // Dil ve Çeviri Yönetimi
-    Volt::route('translations', 'translations.index')->name('translations.index');
+    Route::prefix('translations')->name('translations.')->group(function () {
+        Route::get('/', \App\Livewire\Translations\Index::class)->name('index');
+        Route::get('/create', \App\Livewire\Translations\Create::class)->name('create');
+        Route::get('/{id}/edit', \App\Livewire\Translations\Edit::class)->name('edit');
+    });
+
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', \App\Livewire\Roles\Index::class)->name('index');
+        Route::get('/create', \App\Livewire\Roles\Create::class)->name('create');
+        Route::get('/{id}/edit', \App\Livewire\Roles\Edit::class)->name('edit');
+    });
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', \App\Livewire\Users\Index::class)->name('index');
+        Route::get('/create', \App\Livewire\Users\Create::class)->name('create');
+        Route::get('/{id}/edit', \App\Livewire\Users\Edit::class)->name('edit');
+    });
 });
 
 require __DIR__ . '/auth.php';

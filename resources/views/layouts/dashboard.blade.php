@@ -41,7 +41,7 @@
         <!-- removeNotificationModal -->
         @include('layouts.dashboard.removeNotificationModal')
         <!-- ========== App Menu ========== -->
-        @include('layouts.dashboard.appMenu')
+        @include('layouts.dashboard.menu')
         <!-- Left Sidebar End -->
         <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>

@@ -12,9 +12,7 @@ class LanguageService
     protected ?Collection $languages = null;
     protected ?Language $currentLanguage = null;
 
-    protected function __construct()
-    {
-    }
+    protected function __construct() {}
 
     public static function getInstance(): ?LanguageService
     {
@@ -28,8 +26,7 @@ class LanguageService
     public function getLanguages()
     {
         if (empty($this->languages)) {
-            $this->languages = Language::where('is_active',1)->get();
-            dd($this->languages);
+            $this->languages = Language::where('is_active', 1)->orderBy('id', 'asc')->get();
         }
 
         return $this->languages;
@@ -37,9 +34,9 @@ class LanguageService
 
     public function getCurentLang()
     {
-        if(is_null($this->currentLanguage)) {
+        if (is_null($this->currentLanguage)) {
             $this->currentLanguage = $this->getLanguageByCode(
-                code:app()->getLocale(),
+                code: app()->getLocale(),
             );
         }
 
@@ -48,12 +45,12 @@ class LanguageService
 
     public function getLanguageByCode($code)
     {
-        return $this->getLanguages()->where('code',$code)->first();
+        return $this->getLanguages()->where('code', $code)->first();
     }
 
     public function getDefaultLang()
     {
-        return $this->getLanguages()->where('is_default',1)->first() ?: $this->getLanguages()->first();
+        return $this->getLanguages()->where('is_default', 1)->first() ?: $this->getLanguages()->first();
     }
 
     /*public static function __callStatic($name, $arguments)

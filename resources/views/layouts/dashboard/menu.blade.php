@@ -38,6 +38,21 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-user-2-line"></i> <span>Kullanıcı Yönetimi</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarApps">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('roles.index') }}" class="nav-link"> Rol </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}" class="nav-link"> Kullanıcı </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
@@ -49,7 +64,7 @@
                                 <a href="{{ route('languages.index') }}" class="nav-link"> Dil </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('dashboard') }}" class="nav-link"> Çeviri </a>
+                                <a href="{{ route('translations.index') }}" class="nav-link"> Çeviri </a>
                             </li>
                         </ul>
                     </div>

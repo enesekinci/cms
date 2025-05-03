@@ -15,6 +15,10 @@ class Role extends Model
         'description',
     ];
 
+    protected $casts = [
+        'permissions' => 'array',
+    ];
+
     protected static function boot()
     {
         parent::boot();

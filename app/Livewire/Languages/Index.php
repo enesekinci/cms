@@ -5,9 +5,20 @@ namespace App\Livewire\Languages;
 use App\Models\Language;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+
+    public $label = 'Dil Yönetimi';
+    public $search = '';
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function toggleStatus(Language $language): void
     {
         Log::info('toggleStatus');
@@ -64,14 +75,19 @@ class Index extends Component
         $this->dispatch('success', [
             'message' => 'Dil başarıyla silindi.',
         ]);
-
-        // $this->dispatch('refresh');
     }
 
     public function render()
     {
+        $languages = Language::when($this->search, function ($query) {
+            $query->where(function ($q) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($this->search) . '%'])
+                  ->orWhereRaw('LOWER(code) LIKE ?', ['%' . strtolower($this->search) . '%']);
+            });
+        })->orderBy('id')->paginate(perPage: env('PAGINATION_PER_PAGE', 25));
+
         return view('livewire.languages.index', [
-            'languages' => Language::orderBy('id')->paginate(perPage: 25),
+            'languages' => $languages,
         ])->layout('layouts.dashboard');
     }
 }
