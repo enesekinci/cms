@@ -16,11 +16,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TranslationResource extends Resource
 {
     protected static ?string $model = Translation::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
-    
     protected static ?string $navigationGroup = 'Ayarlar';
+    protected static ?string $navigationLabel = 'Çeviriler';
 
+    protected static ?string $label = 'Çeviri';
+    protected static ?string $pluralLabel = 'Çeviriler';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -73,9 +74,9 @@ class TranslationResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')
+                /*Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Aktif')
-                    ->boolean(),
+                    ->boolean(),*/
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

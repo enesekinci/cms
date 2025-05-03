@@ -3,12 +3,16 @@
 namespace App\Filament\Resources\LanguageResource\Pages;
 
 use App\Filament\Resources\LanguageResource;
+use App\Traits\Filament\HasBackUrl;
 use Filament\Actions;
+use Filament\Pages\Page;
 use Filament\Resources\Pages\EditRecord;
 use App\Models\Language;
 
 class EditLanguage extends EditRecord
 {
+    use HasBackUrl;
+
     protected static string $resource = LanguageResource::class;
 
     protected function getHeaderActions(): array
@@ -29,5 +33,10 @@ class EditLanguage extends EditRecord
             $this->record->update(['is_default' => $data['is_default']]);
         }
         return $data;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

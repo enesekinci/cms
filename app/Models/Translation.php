@@ -10,13 +10,12 @@ class Translation extends Model
     use HasFactory;
 
     protected $fillable = [
+        'group',
         'key',
-        'value',
-        'language_id'
+        'text',
     ];
 
-    public function language()
-    {
-        return $this->belongsTo(Language::class);
-    }
+    protected $casts = [
+        'text' => 'array',
+    ];
 }

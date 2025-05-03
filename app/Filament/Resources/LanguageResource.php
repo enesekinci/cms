@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class LanguageResource extends Resource
 {
@@ -19,6 +20,12 @@ class LanguageResource extends Resource
 
     protected static ?string $navigationGroup = 'Ayarlar';
 
+    protected static ?string $navigationLabel = 'Diller';
+
+    protected static ?string $label = 'Dil';
+
+    protected static ?string $pluralLabel = 'Diller';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -26,7 +33,7 @@ class LanguageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Ad')
+                    ->label('Dil')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('code')
@@ -93,8 +100,27 @@ class LanguageResource extends Resource
                     ->boolean(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make('edit')->label('Düzenle')->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Sil')
+                    ->icon('heroicon-o-trash')
+                    ->requiresConfirmation()
+                    ->action(function (Model $record) {
+                        if($record->is_default) {
+                            Notification::make()
+                                ->title('Varsayılan dili silemezsiniz.')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        $record->delete();
+
+                        Notification::make()
+                            ->title('Dil başarıyla silindi.')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
